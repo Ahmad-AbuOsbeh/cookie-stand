@@ -1,352 +1,224 @@
 'use strict';
 
-let workingHours=['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
+let workingHours=['6:00am','7:00am','8:00am','9:00am','10:00am','11:00am','12:00pm','1:00pm','2:00pm','3:00pm','4:00pm','5:00pm','6:00pm','7:00pm'];
+// let shopsLocations=['Seattle','Tokyo','Dubai','Paris','Lima	'];
 
-//Seattle////////////////////////////////////////////////////////////////////////////////
+//calculate random number
+function gitCustNumPerHour(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+//some global DOM commands here
 
-let Seattle={
+let parent=document.getElementById('parent');
+console.log(parent);
 
-  name: 'Seattle',
-  minNumOfCust:23,
-  maxNumOfCust:65,
-  avgCookieperSale:6.3,
-  gitCustNumPerHour: function(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  },
+//add table tag
 
-  totalCustPerHour:[],
-  totalCookiesPerHour:[],
-  totalCookiesPerDay:0,
+let table=document.createElement('table');
+parent.appendChild(table);
 
-  clcultingFunction: function () {
+//add first row
+let fisrtRow=document.createElement('tr');
+table.appendChild(fisrtRow);
 
-    for (let i = 0; i <workingHours.length; i++) {
+//add 1st (empty) table header for the first row
 
-      this.totalCustPerHour.push(this.gitCustNumPerHour(this.minNumOfCust,this.maxNumOfCust));
+let tableHeader=document.createElement('th');
+fisrtRow.appendChild(tableHeader);
+tableHeader.textContent='  ';
 
+//add 14 table header for working hours
 
-      this.totalCookiesPerHour.push(Math.floor(this.totalCustPerHour[i]*this.avgCookieperSale));
+for (let i = 0; i < workingHours.length; i++) {
+  let tableHeader2_15=document.createElement('th');
+  fisrtRow.appendChild(tableHeader2_15);
+  tableHeader2_15.textContent=workingHours[i];
+}
 
-      this.totalCookiesPerDay=this.totalCookiesPerDay+this.totalCookiesPerHour[i];
+//add 16th table header (total cookies)
 
+let tableHeader16=document.createElement('th');
+fisrtRow.appendChild(tableHeader16);
+tableHeader16.textContent='Daily\nLocation\nTotal';
 
+//make shop constructor to make one object foe each shop
+//add this allShops array to store all objects data for each shop in one array, then we can invoked any content from it.
+let allShops=[];
+function Shop(name,minCust,maxCust,avgCookies) {
 
-    }
-    console.log(this.totalCookiesPerHour);
-    console.log(this.totalCustPerHour);
-    console.log(this.totalCookiesPerDay);
-
-  }
-
-
-};
-
-
-Seattle.clcultingFunction();
-Seattle.gitCustNumPerHour();
-
-
-//DOM
-
-let parent1=document.getElementById('parent');
-console.log(parent1);
-
-let h2Element=document.createElement('h2');
-// console.log(h2Element);
-
-parent1.appendChild(h2Element);
-// console.log(h2Element);
-
-h2Element.textContent='Here are the working hours with expected sales per each location of Salmon Cookies :';
-
-let locationName=document.createElement('h3');
-
-parent1.appendChild(locationName);
-
-locationName.textContent=Seattle.name;
-// console.log(locationName);
-
-let unorederdListHours=document.createElement('ul');
-parent1.appendChild(unorederdListHours);
-
-let listItemHours;
-for (let i = 0; i <= workingHours.length; i++) {
-
-  listItemHours=document.createElement('li');
-  unorederdListHours.appendChild(listItemHours);
-  listItemHours.textContent=`${workingHours[i]} : ${Seattle.totalCookiesPerHour[i]} cookies`;
-  if (i===workingHours.length) {
-    listItemHours.textContent=`Total : ${Seattle.totalCookiesPerDay} cookies`;
-  }
+  this.name= name;
+  this.minNumOfCust= minCust;
+  this.maxNumOfCust= maxCust;
+  this.avgCookieperSale= avgCookies;
+  this.totalCustPerHour= [];
+  this.totalCookiesPerHour= [];
+  this.totalCookiesPerDay= 0;
+  allShops.push(this);
 }
 
 
-//Tokyo////////////////////////////////////////////////////////////////////////////////////
+//make 1st method in prototype to calculate number of customers each hour
+Shop.prototype.calculatingCustomers=function () {
 
-let Tokyo={
-
-  name: 'Tokyo',
-  minNumOfCust:3,
-  maxNumOfCust:24,
-  avgCookieperSale:1.2,
-  gitCustNumPerHour: function(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  },
-
-  totalCustPerHour:[],
-  totalCookiesPerHour:[],
-  totalCookiesPerDay:0,
-
-  clcultingFunction: function () {
-
-    for (let i = 0; i <workingHours.length; i++) {
-
-      this.totalCustPerHour.push(this.gitCustNumPerHour(this.minNumOfCust,this.maxNumOfCust));
-
-
-      this.totalCookiesPerHour.push(Math.floor(this.totalCustPerHour[i]*this.avgCookieperSale));
-
-      this.totalCookiesPerDay=this.totalCookiesPerDay+this.totalCookiesPerHour[i];
-
-
-
-    }
-    console.log(this.totalCookiesPerHour);
-    console.log(this.totalCustPerHour);
-    console.log(this.totalCookiesPerDay);
+  for (let i = 0; i < workingHours.length; i++) {
+    this.totalCustPerHour.push(gitCustNumPerHour(this.minNumOfCust,this.maxNumOfCust));
 
   }
+  console.log(this.totalCustPerHour);
+};
+//make 2nd method in prototype for calculating number of cookies each hour and total cookies per day
+Shop.prototype.clcultingCookiesPerHour=function () {
+  for (let i = 0; i < workingHours.length; i++){
 
+    this.totalCookiesPerHour.push(Math.floor(this.totalCustPerHour[i]*this.avgCookieperSale));
+    this.totalCookiesPerDay+=this.totalCookiesPerHour[i];
+  }
+  console.log(this.totalCookiesPerHour);
+  console.log(this.totalCookiesPerDay);
 
 };
 
+//make 3rd method to store each shop(object) data in the table
+Shop.prototype.renderTable=function () {
 
-Tokyo.clcultingFunction();
-Tokyo.gitCustNumPerHour();
+  //add row for the one shop
+  let rowForEachShop=document.createElement('tr');
+  table.appendChild(rowForEachShop);
 
+  //add cell name of the shop
+  let shopNameBox=document.createElement('td');
+  rowForEachShop.appendChild(shopNameBox);
+  shopNameBox.textContent=this.name;
+  shopNameBox.style.border='2px solid';
 
-//DOM////////
-
-let locationName2=document.createElement('h3');
-
-parent1.appendChild(locationName2);
-
-locationName2.textContent=Tokyo.name;
-// console.log(locationName);
-
-let unorederdListHours2=document.createElement('ul');
-parent1.appendChild(unorederdListHours2);
-
-let listItemHours2;
-for (let i = 0; i <= workingHours.length; i++) {
-
-  listItemHours2=document.createElement('li');
-  unorederdListHours2.appendChild(listItemHours2);
-  listItemHours2.textContent=`${workingHours[i]} : ${Tokyo.totalCookiesPerHour[i]} cookies`;
-  if (i===workingHours.length) {
-    listItemHours2.textContent=`Total : ${Tokyo.totalCookiesPerDay} cookies`;
-  }
-}
-
-//Dubai////////////////////////////////////////////////////////////////////////////////////
-
-let Dubai={
-
-  name: 'Dubai',
-  minNumOfCust:11,
-  maxNumOfCust:38,
-  avgCookieperSale:3.7,
-  gitCustNumPerHour: function(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  },
-
-  totalCustPerHour:[],
-  totalCookiesPerHour:[],
-  totalCookiesPerDay:0,
-
-  clcultingFunction: function () {
-
-    for (let i = 0; i <workingHours.length; i++) {
-
-      this.totalCustPerHour.push(this.gitCustNumPerHour(this.minNumOfCust,this.maxNumOfCust));
-
-
-      this.totalCookiesPerHour.push(Math.floor(this.totalCustPerHour[i]*this.avgCookieperSale));
-
-      this.totalCookiesPerDay=this.totalCookiesPerDay+this.totalCookiesPerHour[i];
-
-
-
-    }
-    console.log(this.totalCookiesPerHour);
-    console.log(this.totalCustPerHour);
-    console.log(this.totalCookiesPerDay);
+  //add 14 table data for cookies per hour
+  for (let i = 0; i < this.totalCookiesPerHour.length; i++) {
+    let tableData2_15=document.createElement('td');
+    rowForEachShop.appendChild(tableData2_15);
+    tableData2_15.textContent=this.totalCookiesPerHour[i];
+    // tableData2_15.setAttribute('border', '2px solid');
+    tableData2_15.style.border='2px solid';
 
   }
+
+  //add total cookies per day for each shop
+  let tableData16=document.createElement('td');
+  rowForEachShop.appendChild(tableData16);
+  tableData16.textContent=this.totalCookiesPerDay;
+  tableData16.style.border='2px solid';
 
 
 };
+//create 5 objects, one for each location////////////////////////////////////////
 
+//make new object by shop constructor for Seattle location
+let Seattle= new Shop('Seattle',23,65,6.3);
+console.log('object1',Seattle);
 
-Dubai.clcultingFunction();
-Dubai.gitCustNumPerHour();
+//make new object by shop constructor for Tokyo location
+let Tokyo= new Shop('Tokyo',3,24,1.2);
+console.log('object2',Tokyo);
 
+//make new object by shop constructor for Dubai location
+let Dubai= new Shop('Dubai',11,38,3.7);
+console.log('object3',Dubai);
 
-//DOM////////
+//make new object by shop constructor for Paris location
+let Paris= new Shop('Paris',20,38,2.3);
+console.log('object4',Paris);
 
-let locationName3=document.createElement('h3');
+//make new object by shop constructor for Lima location
+let Lima= new Shop('Lima',2,16,4.6);
+console.log('object5',Lima);
 
-parent1.appendChild(locationName3);
+//make 4th method to calculate total cookies for each shop per hour and final total of all shops per day
+function renderFooterRow () {
+  //add footer row
+  let tableFooterRow=document.createElement('tr');
+  table.appendChild(tableFooterRow);
 
-locationName3.textContent=Dubai.name;
-// console.log(locationName);
+  //add first cell in this footer row
+  let footerCell_1=document.createElement('th');
+  tableFooterRow.appendChild(footerCell_1);
+  footerCell_1.textContent='Totals';
+  footerCell_1.style.border='2px solid red';
 
-let unorederdListHours3=document.createElement('ul');
-parent1.appendChild(unorederdListHours3);
+  //add total of cookies that saled at each hour for all shops
+  let totalOfEachHourAllShops=0;
+  for (let i = 0; i < workingHours.length; i++) {
 
-let listItemHours3;
-for (let i = 0; i <= workingHours.length; i++) {
+    let footerCell_2_15 =document.createElement('th');
+    tableFooterRow.appendChild(footerCell_2_15);
 
-  listItemHours3=document.createElement('li');
-  unorederdListHours3.appendChild(listItemHours3);
-  listItemHours3.textContent=`${workingHours[i]} : ${Dubai.totalCookiesPerHour[i]} cookies`;
-  if (i===workingHours.length) {
-    listItemHours3.textContent=`Total : ${Dubai.totalCookiesPerDay} cookies`;
-  }
-}
+    for (let x = 0; x < allShops.length; x++) {
 
-
-//Paris////////////////////////////////////////////////////////////////////////////////////
-
-let Paris={
-
-  name: 'Paris',
-  minNumOfCust:20,
-  maxNumOfCust:38,
-  avgCookieperSale:2.3,
-  gitCustNumPerHour: function(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  },
-
-  totalCustPerHour:[],
-  totalCookiesPerHour:[],
-  totalCookiesPerDay:0,
-
-  clcultingFunction: function () {
-
-    for (let i = 0; i <workingHours.length; i++) {
-
-      this.totalCustPerHour.push(this.gitCustNumPerHour(this.minNumOfCust,this.maxNumOfCust));
-
-
-      this.totalCookiesPerHour.push(Math.floor(this.totalCustPerHour[i]*this.avgCookieperSale));
-
-      this.totalCookiesPerDay=this.totalCookiesPerDay+this.totalCookiesPerHour[i];
-
-
+      totalOfEachHourAllShops+=(allShops[x].totalCookiesPerHour[i]);
+      // console.log('total of 6 am',footerCell_2_15);
 
     }
-    console.log(this.totalCookiesPerHour);
-    console.log(this.totalCustPerHour);
-    console.log(this.totalCookiesPerDay);
+    console.log('at 6 am cookies for each shop',totalOfEachHourAllShops);
+    footerCell_2_15.textContent=totalOfEachHourAllShops;
+    footerCell_2_15.style.border='2px solid red';
+    //most important thing to zero the value of some hour sums, to go to the first agin to clculate total of next hour whitout accumalation of the previous hour.
+    totalOfEachHourAllShops=0;
+  }
+  //add all shops amount of cookies that saled whole the day
+  let footerCell_16=document.createElement('th');
+  tableFooterRow.appendChild(footerCell_16);
+
+  let totalAllShops=0;
+  for (let x = 0; x < allShops.length; x++) {
+
+    totalAllShops+=allShops[x].totalCookiesPerDay;
 
   }
 
+  footerCell_16.textContent=totalAllShops;
+  footerCell_16.style.border='2px solid red';
 
-};
-
-
-Paris.clcultingFunction();
-Paris.gitCustNumPerHour();
-
-
-//DOM////////
-
-let locationName4=document.createElement('h3');
-
-parent1.appendChild(locationName4);
-
-locationName4.textContent=Paris.name;
-// console.log(locationName);
-
-let unorederdListHours4=document.createElement('ul');
-parent1.appendChild(unorederdListHours4);
-
-let listItemHours4;
-for (let i = 0; i <= workingHours.length; i++) {
-
-  listItemHours4=document.createElement('li');
-  unorederdListHours4.appendChild(listItemHours4);
-  listItemHours4.textContent=`${workingHours[i]} : ${Paris.totalCookiesPerHour[i]} cookies`;
-  if (i===workingHours.length) {
-    listItemHours4.textContent=`Total : ${Paris.totalCookiesPerDay} cookies`;
-  }
 }
 
 
-//Lima////////////////////////////////////////////////////////////////////////////////////
+//calling all three functions
+Seattle.calculatingCustomers();
+Seattle.clcultingCookiesPerHour();
+Seattle.renderTable();
 
-let Lima={
+Tokyo.calculatingCustomers();
+Tokyo.clcultingCookiesPerHour();
+Tokyo.renderTable();
 
-  name: 'Lima',
-  minNumOfCust:2,
-  maxNumOfCust:16,
-  avgCookieperSale:4.6,
-  gitCustNumPerHour: function(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  },
+Dubai.calculatingCustomers();
+Dubai.clcultingCookiesPerHour();
+Dubai.renderTable();
 
-  totalCustPerHour:[],
-  totalCookiesPerHour:[],
-  totalCookiesPerDay:0,
+Paris.calculatingCustomers();
+Paris.clcultingCookiesPerHour();
+Paris.renderTable();
 
-  clcultingFunction: function () {
-
-    for (let i = 0; i <workingHours.length; i++) {
-
-      this.totalCustPerHour.push(this.gitCustNumPerHour(this.minNumOfCust,this.maxNumOfCust));
-
-
-      this.totalCookiesPerHour.push(Math.floor(this.totalCustPerHour[i]*this.avgCookieperSale));
-
-      this.totalCookiesPerDay=this.totalCookiesPerDay+this.totalCookiesPerHour[i];
+Lima.calculatingCustomers();
+Lima.clcultingCookiesPerHour();
+Lima.renderTable();
 
 
+// console.log('allShops data',allShops);
 
-    }
-    console.log(this.totalCookiesPerHour);
-    console.log(this.totalCustPerHour);
-    console.log(this.totalCookiesPerDay);
-
-  }
+//caling the footer function
+renderFooterRow();
 
 
-};
 
 
-Lima.clcultingFunction();
-Lima.gitCustNumPerHour();
 
 
-//DOM////////
 
-let locationName5=document.createElement('h3');
 
-parent1.appendChild(locationName5);
 
-locationName5.textContent=Lima.name;
-// console.log(locationName);
 
-let unorederdListHours5=document.createElement('ul');
-parent1.appendChild(unorederdListHours5);
 
-let listItemHours5;
-for (let i = 0; i <= workingHours.length; i++) {
 
-  listItemHours5=document.createElement('li');
-  unorederdListHours5.appendChild(listItemHours5);
-  listItemHours5.textContent=`${workingHours[i]} : ${Lima.totalCookiesPerHour[i]} cookies`;
-  if (i===workingHours.length) {
-    listItemHours5.textContent=`Total : ${Lima.totalCookiesPerDay} cookies`;
-  }
-}
+
+
+
+
+
