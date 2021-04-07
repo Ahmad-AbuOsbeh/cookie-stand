@@ -3,43 +3,10 @@
 let workingHours=['6:00am','7:00am','8:00am','9:00am','10:00am','11:00am','12:00pm','1:00pm','2:00pm','3:00pm','4:00pm','5:00pm','6:00pm','7:00pm'];
 // let shopsLocations=['Seattle','Tokyo','Dubai','Paris','Lima	'];
 
-//calculate random number
-function gitCustNumPerHour(min, max) {
+//making function to calculate a random number
+function gitCustRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
-//some global DOM commands here
-
-let parent=document.getElementById('parent');
-console.log(parent);
-
-//add table tag
-
-let table=document.createElement('table');
-parent.appendChild(table);
-
-//add first row
-let fisrtRow=document.createElement('tr');
-table.appendChild(fisrtRow);
-
-//add 1st (empty) table header for the first row
-
-let tableHeader=document.createElement('th');
-fisrtRow.appendChild(tableHeader);
-tableHeader.textContent='  ';
-
-//add 14 table header for working hours
-
-for (let i = 0; i < workingHours.length; i++) {
-  let tableHeader2_15=document.createElement('th');
-  fisrtRow.appendChild(tableHeader2_15);
-  tableHeader2_15.textContent=workingHours[i];
-}
-
-//add 16th table header (total cookies)
-
-let tableHeader16=document.createElement('th');
-fisrtRow.appendChild(tableHeader16);
-tableHeader16.textContent='Daily\nLocation\nTotal';
 
 //make shop constructor to make one object foe each shop
 //add this allShops array to store all objects data for each shop in one array, then we can invoked any content from it.
@@ -61,7 +28,7 @@ function Shop(name,minCust,maxCust,avgCookies) {
 Shop.prototype.calculatingCustomers=function () {
 
   for (let i = 0; i < workingHours.length; i++) {
-    this.totalCustPerHour.push(gitCustNumPerHour(this.minNumOfCust,this.maxNumOfCust));
+    this.totalCustPerHour.push(gitCustRandomNumber(this.minNumOfCust,this.maxNumOfCust));
 
   }
   console.log(this.totalCustPerHour);
@@ -77,6 +44,48 @@ Shop.prototype.clcultingCookiesPerHour=function () {
   console.log(this.totalCookiesPerDay);
 
 };
+
+//start steps to make the table and render the results
+
+//some global DOM commands here
+
+let parent=document.getElementById('parent');
+console.log(parent);
+
+//add table tag
+
+let table=document.createElement('table');
+parent.appendChild(table);
+
+//make function to add the Header of the table to creating the header
+
+function makingTableHeader() {
+
+  //add first row
+  let fisrtRow=document.createElement('tr');
+  table.appendChild(fisrtRow);
+
+  //add 1st (empty) table header for the first row
+
+  let tableHeader=document.createElement('th');
+  fisrtRow.appendChild(tableHeader);
+  tableHeader.textContent='  ';
+
+  //add 14 table header for working hours
+
+  for (let i = 0; i < workingHours.length; i++) {
+    let tableHeader2_15=document.createElement('th');
+    fisrtRow.appendChild(tableHeader2_15);
+    tableHeader2_15.textContent=workingHours[i];
+  }
+
+  //add 16th table header (total cookies)
+
+  let tableHeader16=document.createElement('th');
+  fisrtRow.appendChild(tableHeader16);
+  tableHeader16.textContent='Daily\nLocation\nTotal';
+}
+
 
 //make 3rd method to store each shop(object) data in the table
 Shop.prototype.renderTable=function () {
@@ -109,27 +118,6 @@ Shop.prototype.renderTable=function () {
 
 
 };
-//create 5 objects, one for each location////////////////////////////////////////
-
-//make new object by shop constructor for Seattle location
-let Seattle= new Shop('Seattle',23,65,6.3);
-console.log('object1',Seattle);
-
-//make new object by shop constructor for Tokyo location
-let Tokyo= new Shop('Tokyo',3,24,1.2);
-console.log('object2',Tokyo);
-
-//make new object by shop constructor for Dubai location
-let Dubai= new Shop('Dubai',11,38,3.7);
-console.log('object3',Dubai);
-
-//make new object by shop constructor for Paris location
-let Paris= new Shop('Paris',20,38,2.3);
-console.log('object4',Paris);
-
-//make new object by shop constructor for Lima location
-let Lima= new Shop('Lima',2,16,4.6);
-console.log('object5',Lima);
 
 //make 4th method to calculate total cookies for each shop per hour and final total of all shops per day
 function renderFooterRow () {
@@ -159,6 +147,7 @@ function renderFooterRow () {
     console.log('at 6 am cookies for each shop',totalOfEachHourAllShops);
     footerCell_2_15.textContent=totalOfEachHourAllShops;
     // footerCell_2_15.style.border='2px solid red';
+
     //most important thing to zero the value of some hour sums, to go to the first agin to clculate total of next hour whitout accumalation of the previous hour.
     totalOfEachHourAllShops=0;
   }
@@ -178,27 +167,126 @@ function renderFooterRow () {
 
 }
 
+//create 5 objects, one for each location////////////////////////////////////////
 
-//calling all three functions
-Seattle.calculatingCustomers();
-Seattle.clcultingCookiesPerHour();
-Seattle.renderTable();
+//make new object by shop constructor for Seattle location
+let Seattle= new Shop('Seattle',23,65,6.3);
+console.log('object1',Seattle);
 
-Tokyo.calculatingCustomers();
-Tokyo.clcultingCookiesPerHour();
-Tokyo.renderTable();
+//make new object by shop constructor for Tokyo location
+let Tokyo= new Shop('Tokyo',3,24,1.2);
+console.log('object2',Tokyo);
 
-Dubai.calculatingCustomers();
-Dubai.clcultingCookiesPerHour();
-Dubai.renderTable();
+//make new object by shop constructor for Dubai location
+let Dubai= new Shop('Dubai',11,38,3.7);
+console.log('object3',Dubai);
 
-Paris.calculatingCustomers();
-Paris.clcultingCookiesPerHour();
-Paris.renderTable();
+//make new object by shop constructor for Paris location
+let Paris= new Shop('Paris',20,38,2.3);
+console.log('object4',Paris);
 
-Lima.calculatingCustomers();
-Lima.clcultingCookiesPerHour();
-Lima.renderTable();
+//make new object by shop constructor for Lima location
+let Lima= new Shop('Lima',2,16,4.6);
+console.log('object5',Lima);
+
+
+/*
+now I have in the above:
+- three general functions
+    1-gitCustRandomNumber : its already called in other function above.
+    2-makingTableHeader : I have to call it down
+    3-renderFooterRow : I have to call it down
+
+- three prototype functions
+  1-calculatingCustomers
+  2-clcultingCookiesPerHour
+  3-renderTable
+
+  I will call these prototype functions by for loop.
+
+*/
+
+//calling the table header function
+makingTableHeader();
+
+// calling all three prototypes functions
+// for (let x = 0; x < allShops.length; x++) {
+//   allShops[x].calculatingCustomers();
+//   allShops[x].clcultingCookiesPerHour();
+//   allShops[x].renderTable();
+
+// }
+
+//calling the form from HTML (sales.html)
+let button=document.getElementById('shopForm');
+button.addEventListener('submit',submitterFunction);
+
+//define a function to make the submission process
+function submitterFunction(event) {
+
+  //prevent defualt behaviour of form tag
+  event.preventDefault();
+  console.log('event',event);
+
+  //define 4 variables to store the inputted values
+  let shopName=event.target.shopNameField.value;
+  console.log('shopname',shopName);
+
+  let minCustumers=event.target.minCustField.value;
+  console.log('minCustumers',minCustumers);
+
+  let maxCustumers=event.target.maxCustField.value;
+  console.log('maxCustumers',maxCustumers);
+
+  let avgCookies2=event.target.avgCookiesField.value;
+  console.log('avgCookies2',avgCookies2);
+
+  //make a new object for the new shop location
+  let addNewShopLocation= new Shop(shopName,minCustumers,maxCustumers,avgCookies2);
+  console.log('addNewShopLocation',addNewShopLocation);
+  console.log('allShops data',allShops);
+
+  /*call these two functions here not in the for loope, becuase already its calculated for all shops except the final one that will added by the submitter function.
+
+  also,thier values in other objects still exist.
+  but the render table content will be deleted,therefore we need to run the rendertable prototype function again by the next for loop in the submitter function.*/
+  addNewShopLocation.calculatingCustomers();
+  addNewShopLocation.clcultingCookiesPerHour();
+
+  // call the div parent that contains the table
+  let emptyPage=document.getElementById('parent');
+
+  //make this div is empty
+  emptyPage.textContent='';
+
+  //create the table again, by its global variable
+  table=document.createElement('table');
+  parent.appendChild(table);
+
+  //make the header again after deleting
+  makingTableHeader();
+
+  //render the content of allshops array again in the table
+  for (let j = 0; j < allShops.length; j++) {
+    // allShops[j].calculatingCustomers();
+    // allShops[j].clcultingCookiesPerHour();
+    allShops[j].renderTable();
+
+  }
+  //render the footer again after deleting
+  renderFooterRow();
+
+
+}
+
+//calling all three prototypes function to calculate the data, then to render them in the table.
+for (let x = 0; x < allShops.length; x++) {
+  allShops[x].calculatingCustomers();
+  allShops[x].clcultingCookiesPerHour();
+  allShops[x].renderTable();
+
+}
+
 
 
 // console.log('allShops data',allShops);

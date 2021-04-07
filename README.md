@@ -15,3 +15,17 @@
 - I used the prototype to store all 3 methodes that are used there, then I called them by thier objects.
 - I have calculating sum of each hour of all shops, and sum of all huors during the day for all shops.
 - I made the table to view the data there, instead of unorederlist.
+
+## Lab08b
+### Tuesday 6/4/2021 
+
+- I have added css tyles from zero, now my website it looks good
+- also I linked the homed page(index.html) with sales data page(sales.html)
+
+## Lab09
+### Wedensday 9/4/2021 
+
+- my purpose for today was how to add a new shop location and calculate its data with render them in the table by the user in the webpage.
+- I have added the form to html structure
+- after that, I have used event by addEeventListner on js to link the form.
+- I maked the submitter function to save the inputted data and print them out in the table
