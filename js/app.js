@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 let workingHours=['6:00am','7:00am','8:00am','9:00am','10:00am','11:00am','12:00pm','1:00pm','2:00pm','3:00pm','4:00pm','5:00pm','6:00pm','7:00pm'];
 // let shopsLocations=['Seattle','Tokyo','Dubai','Paris','Lima	'];
@@ -89,7 +89,7 @@ Shop.prototype.renderTable=function () {
   let shopNameBox=document.createElement('td');
   rowForEachShop.appendChild(shopNameBox);
   shopNameBox.textContent=this.name;
-  shopNameBox.style.border='2px solid';
+  // shopNameBox.style.border='2px solid';
 
   //add 14 table data for cookies per hour
   for (let i = 0; i < this.totalCookiesPerHour.length; i++) {
@@ -97,7 +97,7 @@ Shop.prototype.renderTable=function () {
     rowForEachShop.appendChild(tableData2_15);
     tableData2_15.textContent=this.totalCookiesPerHour[i];
     // tableData2_15.setAttribute('border', '2px solid');
-    tableData2_15.style.border='2px solid';
+    // tableData2_15.style.border='2px solid';
 
   }
 
@@ -105,7 +105,7 @@ Shop.prototype.renderTable=function () {
   let tableData16=document.createElement('td');
   rowForEachShop.appendChild(tableData16);
   tableData16.textContent=this.totalCookiesPerDay;
-  tableData16.style.border='2px solid';
+  // tableData16.style.border='2px solid';
 
 
 };
@@ -141,7 +141,7 @@ function renderFooterRow () {
   let footerCell_1=document.createElement('th');
   tableFooterRow.appendChild(footerCell_1);
   footerCell_1.textContent='Totals';
-  footerCell_1.style.border='2px solid red';
+  // footerCell_1.style.border='2px solid red';
 
   //add total of cookies that saled at each hour for all shops
   let totalOfEachHourAllShops=0;
@@ -158,7 +158,7 @@ function renderFooterRow () {
     }
     console.log('at 6 am cookies for each shop',totalOfEachHourAllShops);
     footerCell_2_15.textContent=totalOfEachHourAllShops;
-    footerCell_2_15.style.border='2px solid red';
+    // footerCell_2_15.style.border='2px solid red';
     //most important thing to zero the value of some hour sums, to go to the first agin to clculate total of next hour whitout accumalation of the previous hour.
     totalOfEachHourAllShops=0;
   }
@@ -174,7 +174,7 @@ function renderFooterRow () {
   }
 
   footerCell_16.textContent=totalAllShops;
-  footerCell_16.style.border='2px solid red';
+  // footerCell_16.style.border='2px solid red';
 
 }
 
@@ -205,10 +205,6 @@ Lima.renderTable();
 
 //caling the footer function
 renderFooterRow();
-
-
-
-
 
 
 
